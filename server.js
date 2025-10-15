@@ -117,6 +117,7 @@ const server = http.createServer((req, res) => {
         res.write('</li>');
       });
       res.write('</ul>');
+      //xd
       res.end();
     });
 
