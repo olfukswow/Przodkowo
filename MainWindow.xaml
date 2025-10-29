@@ -1,0 +1,77 @@
+﻿<Window
+    x:Class="bmi.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="BMI Kalkulator"
+    Width="420"
+    Height="260"
+    mc:Ignorable="d">
+    <Grid Margin="16">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="140" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="8" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="12" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="16" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="0"
+            Margin="0,0,8,0"
+            VerticalAlignment="Center"
+            Text="Waga (kg):" />
+        <TextBox
+            Name="WeightTextBox"
+            Grid.Row="0"
+            Grid.Column="1"
+            VerticalAlignment="Center" />
+
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="0"
+            Margin="0,0,8,0"
+            VerticalAlignment="Center"
+            Text="Wzrost (cm):" />
+        <TextBox
+            Name="HeightTextBox"
+            Grid.Row="2"
+            Grid.Column="1"
+            VerticalAlignment="Center" />
+
+        <Button
+            Name="CalculateButton"
+            Grid.Row="4"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Width="120"
+            Padding="8,4"
+            HorizontalAlignment="Center"
+            Click="CalculateButton_Click"
+            Content="Oblicz BMI" />
+
+        <Border
+            Name="ResultBorder"
+            Grid.Row="6"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Padding="10"
+            Background="Transparent"
+            BorderBrush="#FFCCCCCC"
+            BorderThickness="1"
+            CornerRadius="6">
+            <TextBlock
+                Name="ResultTextBlock"
+                Text="Podaj wagę i wzrost, a następnie kliknij Oblicz BMI."
+                TextWrapping="Wrap" />
+        </Border>
+    </Grid>
+</Window>
