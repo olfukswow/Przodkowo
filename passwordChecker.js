@@ -36,7 +36,6 @@ function analyzePassword(password, popularPasswords) {
     score++;
   }
 
-  // Bonus za długość >12
   if (password.length >= 12) score++;
 
   let strength = '';
@@ -46,5 +45,4 @@ function analyzePassword(password, popularPasswords) {
 
   return { score, strength, suggestions };
 }
-
 module.exports = { loadPopularPasswords, analyzePassword };

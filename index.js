@@ -11,15 +11,15 @@ const popularPasswords = loadPopularPasswords('./popular-passwords.txt');
 rl.question('Podaj hasło do analizy: ', (password) => {
   const result = analyzePassword(password, popularPasswords);
 
-  console.log('\n📊 Wyniki analizy:');
+  console.log('\nWyniki analizy:');
   console.log(`Siła hasła: ${result.strength}`);
   console.log(`Punkty: ${result.score}/8`);
 
   if (result.suggestions.length > 0) {
-    console.log('\n💡 Sugestie poprawy:');
+    console.log('\nSugestie poprawy:');
     result.suggestions.forEach(s => console.log(`- ${s}`));
   } else {
-    console.log('\n✅ Hasło jest bardzo silne!');
+    console.log('\nHasło jest bardzo silne!');
   }
 
   rl.close();
