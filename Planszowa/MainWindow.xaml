@@ -1,0 +1,56 @@
+﻿<Window
+    x:Class="Planszowa.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Memory - Planszowa"
+    Width="800"
+    Height="520">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel
+            Grid.Row="0"
+            Margin="0,0,0,10"
+            Orientation="Horizontal">
+            <TextBlock VerticalAlignment="Center" FontWeight="Bold">Liczba par:</TextBlock>
+            <ComboBox
+                x:Name="PairCountCombo"
+                Width="80"
+                SelectedIndex="0"
+                SelectionChanged="PairCountCombo_SelectionChanged">
+                <ComboBoxItem>8</ComboBoxItem>
+                <ComboBoxItem>9</ComboBoxItem>
+                <ComboBoxItem>10</ComboBoxItem>
+                <ComboBoxItem>11</ComboBoxItem>
+                <ComboBoxItem>12</ComboBoxItem>
+            </ComboBox>
+
+            <Button
+                x:Name="RestartButton"
+                Margin="10,0"
+                Click="RestartButton_Click"
+                Content="Restart" />
+
+            <StackPanel Margin="20,0" Orientation="Horizontal">
+                <TextBlock FontWeight="Bold" Text="Ruchy: " />
+                <TextBlock x:Name="MovesText" Text="0" />
+            </StackPanel>
+
+            <StackPanel Margin="10,0" Orientation="Horizontal">
+                <TextBlock FontWeight="Bold" Text="Czas: " />
+                <TextBlock x:Name="TimerText" Text="00:00" />
+            </StackPanel>
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <UniformGrid
+                x:Name="CardPanel"
+                Margin="0"
+                Columns="4"
+                Rows="4" />
+        </ScrollViewer>
+    </Grid>
+</Window>
