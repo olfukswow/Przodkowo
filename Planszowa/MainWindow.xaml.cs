@@ -34,6 +34,10 @@ namespace Planszowa
         {
             InitializeComponent();
 
+            // Reaguj na zmianę rozmiaru panelu kart i okna — dzięki temu obrazy skalują się dynamicznie
+            CardPanel.SizeChanged += CardPanel_SizeChanged;
+            this.SizeChanged += Window_SizeChanged;
+
             gameTimer.Interval = TimeSpan.FromSeconds(1);
             gameTimer.Tick += GameTimer_Tick;
 
@@ -101,6 +105,7 @@ namespace Planszowa
                     Source = bitmap,
                     Visibility = Visibility.Hidden,
                     Stretch = System.Windows.Media.Stretch.UniformToFill
+                    // Width/Height będą ustawione centralnie w UpdateCardSizes()
                 };
 
                 var btn = new Button
@@ -114,6 +119,9 @@ namespace Planszowa
                 btn.Click += Card_Click;
                 CardPanel.Children.Add(btn);
             }
+
+            // Zaktualizuj rozmiary kart po zbudowaniu siatki — użyj dispatcher, bo ActualWidth/ActualHeight może nie być jeszcze poprawne
+            Dispatcher.BeginInvoke(new Action(UpdateCardSizes), DispatcherPriority.Loaded);
         }
 
         private void Card_Click(object sender, RoutedEventArgs e)
@@ -219,6 +227,58 @@ namespace Planszowa
         {
             if (IsLoaded)
                 StartNewGame();
+        }
+
+        // ------------------ DODATKOWE METODY DLA SKALOWANIA ------------------
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            // Przy zmianie rozmiaru okna zaktualizuj rozmiary kart
+            UpdateCardSizes();
+        }
+
+        private void CardPanel_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            UpdateCardSizes();
+        }
+
+        // Oblicza rozmiar "komórki" siatki i ustawia Width/Height przycisków (a przez to obrazów)
+        private void UpdateCardSizes()
+        {
+            // Jeśli brak dzieci lub wymiary nieokreślone — nic nie rób
+            if (CardPanel.Children.Count == 0) return;
+            if (CardPanel.ActualWidth <= 0 || CardPanel.ActualHeight <= 0) return;
+
+            int cols = Math.Max(1, CardPanel.Columns);
+            int rows = Math.Max(1, CardPanel.Rows);
+
+            // Margines boczny każdego przycisku: używamy Margin + Padding + mały zapas
+            // Margines występuje po obu stronach komórki, więc odejmujemy je przy obliczeniu
+            double horizontalMargin = 12; // suma odstępów (przybliżona: left+right)
+            double verticalMargin = 12;   // suma odstępów (top+bottom)
+
+            double availableWidth = Math.Max(0.0, CardPanel.ActualWidth - cols * horizontalMargin);
+            double availableHeight = Math.Max(0.0, CardPanel.ActualHeight - rows * verticalMargin);
+
+            double cellWidth = availableWidth / cols;
+            double cellHeight = availableHeight / rows;
+
+            // Ustawiamy kwadratowe komórki — wielkość zależna od mniejszego z wymiarów
+            double targetSize = Math.Max(48, Math.Floor(Math.Min(cellWidth, cellHeight)));
+
+            foreach (var child in CardPanel.Children.OfType<Button>())
+            {
+                child.Width = targetSize;
+                child.Height = targetSize;
+
+                // Upewnij się, że obraz w środku dostosowuje się do kontenera
+                if (child.Content is Image img)
+                {
+                    img.Width = double.NaN;  // pozwól layoutowi dopasować obraz do przycisku
+                    img.Height = double.NaN;
+                    img.Stretch = System.Windows.Media.Stretch.UniformToFill;
+                }
+            }
         }
     }
 }
